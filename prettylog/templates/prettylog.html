@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Errors</title>
+    <style>
+        body{
+        font-family: adobe caslon pro, georgia;
+        }
+
+        .count{
+        font-size: 50px;
+        border-radius: 50px;
+        width: 70px;
+        height: 90px;
+        color: #fff;
+        float: left;
+        margin: 5px 15px;
+        padding: 5px 15px;
+        line-height: 100px;
+        text-align:center;
+        }
+
+        .high{
+        background: #923939;
+        }
+
+        .medium{
+        background: #ae7560;
+        }
+
+        .low{
+        background: #d1a78d;
+        }
+
+        .total-count{
+        background: #397c7d;
+        }
+
+        .error{
+        margin-left: 20px;
+        width: 70%;
+        float: left;
+        }
+
+        .clear{
+        clear: both;
+        }
+
+        .title{
+        font-variant: small-caps;
+        line-height: 70px;
+        font-size: 50px;
+        color: #53557d;
+        margin: 30px;
+        float: left;
+        }
+
+        hr{
+        border: none;
+        border-bottom: 2px solid #ccc;
+        margin-bottom: 40px;
+        }
+
+        h1{
+        color: #7d1d00;
+        }
+
+        h2{
+        margin-left: 20px;
+        color: #a8450e;
+        }
+
+        .code{
+        margin: 20px 40px;
+        color: #332c22;
+        font-family: courier;
+        }
+
+        .filepath{
+        margin: 0 0 5px 40px;
+        text-indent: -20px;
+    </style>
+    <link type="text/css" rel="stylesheet" media="screen" href="{{ LOG_CSS_PATH }}" />
+</head>
+<body>
+
+    <div class="count total-count">{{ total_errors }}</div>
+    <h1 class="title">Total errors</h1><div class="clear"></div>
+
+    <hr />
+
+    {% for error in errors %}
+        <div class="count {{ error.frequency }}">{{ error.count }}</div>
+        <div class="error">
+            <h1>{{ error.type }}</h1>
+            <h2>{{ error.timestamp }}</h2>
+            <div class="code">
+                <div>{{ error.trace.first_line }}</div>
+                {% for line in error.trace.filepaths %}
+                    <div class="filepath">{{ line }}</div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="clear"></div>
+    {% endfor %}
+
+</body></html>
