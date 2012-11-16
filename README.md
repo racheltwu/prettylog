@@ -27,6 +27,8 @@ Installation
 
 5. Create or update the `LOGGING` variable in your settings file. Define `LOGGING` first with the defaults if you don't have it already defined. The log parser requires this specific formatter.
 
+        import django.conf.global_settings as defaults
+
         LOGGING = defaults.LOGGING
 
         LOGGING['formatters'] = {
