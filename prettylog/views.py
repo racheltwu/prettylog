@@ -13,26 +13,29 @@ def error_log(request):
     error_counts = {}
     errors = []
 
-    log = open(path.join(settings.LOG_DIR, 'prettylog.txt'), 'r')
-    trace = ''
-    currently_reading_trace = False
-    for line in log:
-        if line.startswith('ERROR'):
-            timestamp = line
-            currently_reading_trace = True
-        elif currently_reading_trace and not line.startswith('Traceback') and not line.startswith(' '):
-            currently_reading_trace = False
-            error_type = line
-            if trace not in error_counts:
-                error_count = 1
-                errors.append({'type': error_type, 'trace': trace})
-            else:
-                error_count = error_counts[trace]['count'] + 1
-            error_counts[trace] = {'count': error_count, 'timestamp': timestamp}
-            trace = ''
-        elif currently_reading_trace:
-            trace += line
-    log.close()
+    try:
+        log = open(path.join(settings.LOG_DIR, 'prettylog.txt'), 'r')
+        trace = ''
+        currently_reading_trace = False
+        for line in log:
+            if line.startswith('ERROR'):
+                timestamp = line
+                currently_reading_trace = True
+            elif currently_reading_trace and not line.startswith('Traceback') and not line.startswith(' '):
+                currently_reading_trace = False
+                error_type = line
+                if trace not in error_counts:
+                    error_count = 1
+                    errors.append({'type': error_type, 'trace': trace})
+                else:
+                    error_count = error_counts[trace]['count'] + 1
+                error_counts[trace] = {'count': error_count, 'timestamp': timestamp}
+                trace = ''
+            elif currently_reading_trace:
+                trace += line
+        log.close()
+    except IOError:
+        pass
 
     for error in errors:
         error.update(error_counts[error['trace']])
