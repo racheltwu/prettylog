@@ -40,7 +40,7 @@ def error_log(request):
     for error in errors:
         error.update(error_counts[error['trace']])
         error['frequency'] = 'high' if error['count'] > 10 else 'medium' if error['count'] > 5 else 'low'
-        error['trace'] = error['trace'].split('\n')
+        error['trace'] = error['trace'].splitlines()
         filepaths = []
         current_filepath = ''
         for line in error['trace'][1:]:
@@ -51,6 +51,8 @@ def error_log(request):
                 current_filepath = line
             else:
                 current_filepath += line
+        if current_filepath:
+            filepaths.append(current_filepath.replace('\n',''))
         error['trace'] = {'first_line': error['trace'][0], 'filepaths': filepaths}
 
     errors.sort(key = lambda e: e['timestamp'])
