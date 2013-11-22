@@ -2,8 +2,11 @@ from os import path
 
 from django.shortcuts import render_to_response
 from django.contrib.admin.views.decorators import staff_member_required
+from django.views.decorators.cache import never_cache
 from django.conf import settings
 
+
+@never_cache
 @staff_member_required
 def error_log(request):
 
