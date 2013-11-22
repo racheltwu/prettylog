@@ -39,7 +39,7 @@ Installation
                 'verbose': {'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'}
             },
             'handlers': {
-                'catchall': {
+                'log_file': {
                     'level': 'INFO',
                     'class': 'logging.handlers.RotatingFileHandler',
                     'formatter': 'verbose',
@@ -50,9 +50,14 @@ Installation
             },
             'loggers': {
                 '': {
-                    'handlers': ['catchall'],
+                    'handlers': ['log_file'],
                     'level': 'INFO',
-                }
+                },
+                'django.request': {
+                    'handlers': ['log_file'],
+                    'level': 'INFO',
+                    'propagate': True,
+                },
             }
         }
 
